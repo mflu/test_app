@@ -528,6 +528,17 @@ get '/service/postgresql/:key' do
   value
 end
 
+put '/service/postgresql/truncate/:table' do
+  begin
+    client = load_postgresql
+    client.query("truncate table #{params[:table]};")
+    client.close
+    params[:table]
+  rescue => e
+     "#{e} => #{e.backtrace}"
+  end
+end
+
 put '/service/postgresql/table/:table' do
   begin
   client = load_postgresql
